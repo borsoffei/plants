@@ -44,10 +44,7 @@ class MyMainApp(MDApp):
         self.current_tab = 'one'
         self.tab_one_state = 'find'
         self.tab_two_state = 'dictionary'
-        # LabelBase.register(name='comforta-bold',
-        #                    fn_regular='comfortaa-bold.ttf')
-        LabelBase.register(name='Exo2',
-                           fn_regular='Exo2-VariableFont_wght.ttf')
+        
 
         self.colors = {'aquamarine': '#30BBAC',
                        'ultra_dark_green': '#003128',
