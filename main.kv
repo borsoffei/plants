@@ -1,0 +1,349 @@
+
+#<MyChip>
+#    icon: ''
+#    font_size: '72dp'
+
+<MD3Card>
+    padding: 4
+    size_hint: None, None
+    size: (app.window_size_x * 0.2, app.window_size_y * 0.3)
+    line_color: (0.2, 0.2, 0.2, 0.8)
+    style: 'elevated'
+    md_bg_color: "#ECDFEB"
+    shadow_softness: 2
+    shadow_offset: (0, 1)
+    plant_or_ill: ''
+    image_path: ''
+    on_touch_down: app.open_article(self, args[1])
+    MDRelativeLayout:
+        color: app.colors['white']
+        MDLabel:
+            id: label
+            text: root.text
+            adaptive_size: True
+            color: '#2C1B16'
+            pos_hint: {"center_x": .5, "y": .1}
+            font_style: 'H5'
+
+        FitImage:
+            id: card_image
+            source: root.image_path
+            size_hint: (.95, .7)
+            pos_hint: {"center_x": .5, "top": .97}
+            radius: [15]
+
+MDBoxLayout:
+    name: "main"
+    orientation: 'vertical'
+    size: (app.window_size_x, app.window_size_y)
+    MDTabs:
+        id: tabs
+        on_tab_switch: app.on_tab_switch(*args)
+        size_hint_y: .1
+        background_color: app.colors['dark_green']
+        tab_bar_height: app.window_size_y*0.09
+        Tab:
+            id: first_tab
+            title: "Поиск Заболевания"
+            content_text: f"This is an example text for {self.title}"
+
+        Tab:
+            id: second_tab
+            title: "Растения"
+            content_text: f"This is an example text for {self.title}"
+
+
+<MDTextField>:
+    line_color_focus: app.colors['aquamarine']
+    hint_text_color_focus: app.colors['aquamarine']
+    font_size: 24
+    text_color_focus: 'black'
+
+
+<FindScreen>:
+    id: find_screen
+    MDBoxLayout:
+        orientation: 'horizontal'
+        width: app.window_size_x
+        MDScrollView:
+            size_hint_x: .3
+            MDGridLayout:
+                cols: 1
+                height: self.minimum_height
+                size_hint_y: None
+                spacing: 20
+                padding: 20
+                MDTextField:
+                    id: plant_input
+                    hint_text: 'Название Растения'
+                    helper_text_mode: "persistent"
+                    on_text: root.suggestion()
+                    size_hint_y: None
+                    height: self.minimum_height
+                MDStackLayout:
+                    id: suggestion_box
+                    height: self.minimum_height
+                    size_hint_y: None
+                MDBoxLayout:
+                    orientation: 'horizontal'
+                    height: self.minimum_height
+                    size_hint_y: None
+
+                    MDLabel:
+                        text: 'Симптомы'
+                        size_hint_y: 1
+                        font_size: 28
+                        halign: 'left'
+                        valign: 'center'
+                        pos_hint_y: {'center_y': .5}
+
+                    MDFillRoundFlatButton:
+                        size_hint_y: 1
+                        id: clear_button
+                        text: 'Очистить симптомы'
+                        md_bg_color: app.colors['pink']
+                        on_press: root.clear_filters()
+                        text_color: 'black'
+                        font_size: 20
+                        pos_hint_y: {'center_y': .5}
+
+                MDStackLayout:
+                    id: symp_box
+                    height: self.minimum_height
+                    size_hint_y: None
+                    spacing: 10
+
+        MDScrollView:
+            size_hint_x: .7
+            scroll_wheel_distance: 50
+
+            MDGridLayout:
+                md_bg_color: '#f7f7f7'
+                size_hint_y: None
+                height: self.minimum_height
+                cols: 2
+                color: app.colors['white']
+                id: list_ill_box
+                spacing: [app.window_size_x * 0.1, app.window_size_y * 0.1]
+                pos_hint: {"center_x": .5, "center_y": .5}
+                padding: [app.window_size_x * 0.1, app.window_size_y * 0.05, app.window_size_x * 0.1, app.window_size_y * 0.05]
+<IllScreen>:
+    id: ill_screen
+    MDScrollView:
+        MDBoxLayout:
+            orientation: 'vertical'
+            padding: 20
+            spacing: 20
+            height: self.minimum_height
+            size_hint_y: None
+            MDFillRoundFlatButton:
+                id: back_button
+                text: 'Назад'
+                on_press: app.sm_main.current = 'find'
+                md_bg_color: app.colors['pink']
+                text_color: 'black'
+                font_size: 20
+        #            pos_hint_x: {'center_x': .2}
+
+            MDLabel:
+                id: ill_name
+                halign: 'center'
+                font_size: 32
+                size_hint_y: None
+                height: self.texture_size[1] + dp(5)
+                bold: True
+            Image:
+                id: ill_image
+                source: ''
+                pos_hint_x: {'center_x': .5}
+                size: (app.window_size_x*0.4, app.window_size_y*0.4)
+                size_hint_y: None
+
+            MDLabel:
+                halign: 'center'
+                font_size: 24
+                text: 'Симптомы:'
+                size_hint_y: None
+                height: self.texture_size[1] + dp(5)
+                bold: True
+            MDLabel:
+                id: ill_symptoms
+                halign: 'center'
+                font_size: 24
+                size_hint_y: None
+                height: self.texture_size[1] + dp(5)
+            MDLabel:
+                halign: 'center'
+                font_size: 24
+                text: 'Растения, склонные к заболеванию:'
+                size_hint_y: None
+                height: self.texture_size[1] + dp(5)
+                bold: True
+            MDLabel:
+                id: ill_plants
+                halign: 'center'
+                font_size: 24
+                size_hint_y: None
+                height: self.texture_size[1] + dp(5)
+            MDLabel:
+                halign: 'center'
+                font_size: 24
+                text: 'Описание'
+                size_hint_y: None
+                height: self.texture_size[1] + dp(5)
+                bold: True
+            MDLabel:
+                id: ill_description
+                halign: 'center'
+                font_size: 24
+                size_hint_y: None
+                height: self.texture_size[1] + dp(5)
+
+
+
+<DictionaryScreen>:
+    id: third_screen
+    MDBoxLayout:
+        orientation: 'horizontal'
+        width: app.window_size_x
+        MDScrollView:
+            size_hint_x: .3
+            MDGridLayout:
+                cols: 1
+                height: self.minimum_height
+                size_hint_y: None
+                spacing: 20
+                padding: 20
+                MDTextField:
+                    id: plant_input
+                    hint_text: 'Введите Название Растения'
+                    helper_text_mode: "persistent"
+                    on_text: root.create_cards()
+                    height: self.minimum_height
+                    size_hint_y: None
+                MDLabel:
+                    text: 'Категория'
+                    font_size: 28
+                    halign: 'left'
+                    valign: 'bottom'
+
+
+                MDBoxLayout:
+                    height: self.minimum_height
+                    size_hint_y: None
+
+                MDStackLayout:
+                    id: category_box
+                    height: self.minimum_height
+                    size_hint_y: None
+                    spacing: 10
+                MDBoxLayout:
+                    orientation: 'horizontal'
+                    height: self.minimum_height
+                    size_hint_y: None
+
+                    MDLabel:
+                        text: 'Фильтры'
+                        size_hint_y: 1
+                        font_size: 28
+                        halign: 'left'
+                        pos_hint_y: {'center_y': .5}
+
+                    MDFillRoundFlatButton:
+                        id: clear_button
+                        text: 'Очистить фильтры'
+                        on_press: root.clear_filters()
+                        size_hint_y: 1
+                        md_bg_color: app.colors['pink']
+                        text_color: 'black'
+                        font_size: 20
+                        pos_hint_y: {'center_y': .5}
+                MDStackLayout:
+                    id: filter_box
+                    height: self.minimum_height
+                    size_hint_y: None
+                    spacing: 10
+
+        MDScrollView:
+            scroll_wheel_distance: 50
+            size_hint_x: .7
+            MDGridLayout:
+                md_bg_color: '#f7f7f7'
+                cols: 2
+                color: app.colors['white']
+                id: list_plant_box
+                size_hint_y: None
+                height: self.minimum_height
+                spacing: [app.window_size_x * 0.1, app.window_size_y * 0.1]
+                pos_hint: {"center_x": .5, "center_y": .5}
+                padding: [app.window_size_x * 0.1, app.window_size_y * 0.1, app.window_size_x * 0.1, app.window_size_y * 0.1]
+<PlantScreen>:
+    id: plant_screen
+    MDScrollView:
+        MDBoxLayout:
+            orientation: 'vertical'
+            height: self.minimum_height
+            size_hint_y: None
+            spacing: 20
+            padding: 20
+
+            MDFillRoundFlatButton:
+                id: back_button
+                text: 'Назад'
+                on_press: app.sm_main.current = 'dictionary'
+                md_bg_color: app.colors['pink']
+                text_color: 'black'
+                font_size: 20
+#                height: self.minimum_height
+                size_hint_y: None
+            MDLabel:
+                id: plant_name
+                halign: 'center'
+                font_size: 32
+                height: self.texture_size[1] + dp(5)
+                bold: True
+            Image:
+                id: plant_image
+                source: ''
+#                height: self.minimum_height
+                size: (app.window_size_x*0.4, app.window_size_y*0.4)
+                size_hint_y: None
+            MDLabel:
+                halign: 'center'
+                font_size: 24
+                text: 'Категория:'
+                size_hint_y: None
+                height: self.texture_size[1] + dp(5)
+                bold: True
+            MDLabel:
+                id: plant_category
+                font_size: 24
+                halign: 'center'
+                height: self.texture_size[1] + dp(5)
+                size_hint_y: None
+            MDLabel:
+                halign: 'center'
+                font_size: 24
+                text: 'Особенности:'
+                height: self.texture_size[1] + dp(5)
+                size_hint_y: None
+                bold: True
+            MDLabel:
+                id: plant_filters
+                font_size: 24
+                halign: 'center'
+                height: self.texture_size[1] + dp(5)
+                size_hint_y: None
+            MDLabel:
+                halign: 'center'
+                font_size: 24
+                text: 'Описание'
+                size_hint_y: None
+                height: self.texture_size[1] + dp(5)
+                bold: True
+            MDLabel:
+                id: plant_description
+                font_size: 24
+                halign: 'center'
+                height: self.texture_size[1] + dp(5)
+                size_hint_y: None
